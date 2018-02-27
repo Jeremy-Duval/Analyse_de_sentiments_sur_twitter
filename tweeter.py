@@ -2,6 +2,7 @@ import tweepy
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 import json
+import codecs
 
 consumer_key ='HzZpvfMusPz9rOujU6XAjruBW'
 consumer_secret = 'oJ9IdjidamiZC1HZTO7gyRvrVcyHXKyaDkM7TdCOhAy3bgE7JS'
@@ -18,6 +19,7 @@ class listener(StreamListener):
     
     def __init__(self):
         self.compteur=0
+        self.mon_fichier = codecs.open("fichier.txt", "a","utf-8")
         
     def on_data(self, data):
         all_data = json.loads(data)
@@ -32,10 +34,14 @@ class listener(StreamListener):
           user_location = all_data["user"]["location"]
           user_coordinates   = all_data["coordinates"]
 		  
+          
+          self.mon_fichier.write(tweet+"\n")
+          
           self.compteur=self.compteur+1
           print((self.compteur,username,tweet))
           if self.compteur >= 10:
-                return False
+              self.mon_fichier.close()  
+              return False
           return True   
         else:
             return True
@@ -44,6 +50,6 @@ class listener(StreamListener):
     def on_error(self, status):
         print(status)
 
-twitterStream = Stream(auth, listener())
+#twitterStream = Stream(auth, listener())
 #le contenu de la recherche se met ici dans track
-twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)
+#twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)

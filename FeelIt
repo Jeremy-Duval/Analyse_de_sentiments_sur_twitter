@@ -28,8 +28,8 @@ entree.pack()
 
 def saisie():
     valeur = entree.get()
-    Listener = listener()
-    twitterStream = Stream(auth, Listener)
+    Listener = tweeter.listener()
+    twitterStream = tweeter.Stream(tweeter.auth, Listener)
     #le contenu de la recherche se met ici dans track
     twitterStream.filter(track=[valeur],languages = ["fr"], stall_warnings = True)
     
