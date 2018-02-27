@@ -13,10 +13,15 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-class listener(StreamListener):
 
+class listener(StreamListener):
+    
+    def __init__(self):
+        self.compteur=0
+        
     def on_data(self, data):
         all_data = json.loads(data)
+        
 		# collect all desired data fields 
         if 'text' in all_data:
           tweet         = all_data["text"]
@@ -27,11 +32,14 @@ class listener(StreamListener):
           user_location = all_data["user"]["location"]
           user_coordinates   = all_data["coordinates"]
 		  
-            
-          print((username,tweet))
-          return True
+          self.compteur=self.compteur+1
+          print((self.compteur,username,tweet))
+          if self.compteur >= 10:
+                return False
+          return True   
         else:
             return True
+            
 
     def on_error(self, status):
         print(status)
