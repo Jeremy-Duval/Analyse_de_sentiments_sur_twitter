@@ -19,8 +19,8 @@ class listener(StreamListener):
     
     def __init__(self):
         self.compteur=0
-        self.mon_fichier = codecs.open("fichier.txt", "a","utf-8")
-        
+        #self.mon_fichier = codecs.open("fichier.txt", "a","utf-8")
+        self.liste=[]
     def on_data(self, data):
         all_data = json.loads(data)
         
@@ -35,12 +35,13 @@ class listener(StreamListener):
           user_coordinates   = all_data["coordinates"]
 		  
           
-          self.mon_fichier.write(tweet+"\n")
+          #self.mon_fichier.write(tweet+"\n")
           
           self.compteur=self.compteur+1
+          self.liste.append(tweet)
           print((self.compteur,username,tweet))
           if self.compteur >= 10:
-              self.mon_fichier.close()  
+              #self.mon_fichier.close()  
               return False
           return True   
         else:
