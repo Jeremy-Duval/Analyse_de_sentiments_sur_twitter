@@ -11,7 +11,7 @@ nlp = spacy.load('fr')
 # In[17]:
 
 
-doc = nlp(u'J\'aime bien les cacahuète pas quoi et')
+doc = nlp(u'J\'aime bien les chat')
 
 
 # In[38]:
