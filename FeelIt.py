@@ -29,7 +29,6 @@ entree.pack()
 def saisie():
     valeur = entree.get()
     controller.init_tweet(valeur)
-    twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
     
     
 bouton = Button(Frame1, text="Valider",command = saisie)

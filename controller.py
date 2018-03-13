@@ -13,3 +13,4 @@ def init_tweet(valeur):
     twitterStream = tweeter.Stream(tweeter.auth, Listener)
     #le contenu de la recherche se met ici dans track
     twitterStream.filter(track=[valeur],languages = ["fr"], stall_warnings = True)
+    liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
