@@ -2,7 +2,7 @@ import tweepy
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 import json
-import codecs
+#import codecs
 
 consumer_key ='HzZpvfMusPz9rOujU6XAjruBW'
 consumer_secret = 'oJ9IdjidamiZC1HZTO7gyRvrVcyHXKyaDkM7TdCOhAy3bgE7JS'
@@ -21,6 +21,7 @@ class listener(StreamListener):
         self.compteur=0
         #self.mon_fichier = codecs.open("fichier.txt", "a","utf-8")
         self.liste=[]
+        
     def on_data(self, data):
         all_data = json.loads(data)
         
@@ -40,14 +41,17 @@ class listener(StreamListener):
           self.compteur=self.compteur+1
           self.liste.append(tweet)
           print((self.compteur,username,tweet))
-          if self.compteur >= 10:
+          #print(self.liste[self.compteur-1])
+          if self.compteur >= 3:
               #self.mon_fichier.close()  
               return False
           return True   
         else:
             return True
             
-
+    def retrieveList(self):
+        return self.liste
+    
     def on_error(self, status):
         print(status)
 

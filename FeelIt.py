@@ -32,6 +32,7 @@ def saisie():
     twitterStream = tweeter.Stream(tweeter.auth, Listener)
     #le contenu de la recherche se met ici dans track
     twitterStream.filter(track=[valeur],languages = ["fr"], stall_warnings = True)
+    twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
     
 bouton = Button(Frame1, text="Valider",command = saisie)
 bouton.pack()
