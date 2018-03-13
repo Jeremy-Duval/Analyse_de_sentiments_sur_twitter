@@ -40,7 +40,7 @@ class listener(StreamListener):
           self.compteur=self.compteur+1
           self.liste.append(tweet)
           print((self.compteur,username,tweet))
-          if self.compteur >= 10:
+          if self.compteur >= 3:
               #self.mon_fichier.close()  
               return False
           return True   
@@ -54,3 +54,5 @@ class listener(StreamListener):
 #twitterStream = Stream(auth, listener())
 #le contenu de la recherche se met ici dans track
 #twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)
+        
+        

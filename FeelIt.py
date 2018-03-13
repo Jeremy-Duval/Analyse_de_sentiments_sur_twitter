@@ -7,7 +7,7 @@ Created on Mon Feb 26 08:46:28 2018
 """
 
 from Tkinter import *
-import tweeter
+import controller
 
         
 fenetre = Tk()
@@ -28,10 +28,8 @@ entree.pack()
 
 def saisie():
     valeur = entree.get()
-    Listener = tweeter.listener()
-    twitterStream = tweeter.Stream(tweeter.auth, Listener)
-    #le contenu de la recherche se met ici dans track
-    twitterStream.filter(track=[valeur],languages = ["fr"], stall_warnings = True)
+    controller.init_tweet(valeur)
+    
     
 bouton = Button(Frame1, text="Valider",command = saisie)
 bouton.pack()
