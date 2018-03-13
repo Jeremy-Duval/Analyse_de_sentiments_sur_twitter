@@ -58,3 +58,5 @@ class listener(StreamListener):
 #twitterStream = Stream(auth, listener())
 #le contenu de la recherche se met ici dans track
 #twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)
+        
+        
