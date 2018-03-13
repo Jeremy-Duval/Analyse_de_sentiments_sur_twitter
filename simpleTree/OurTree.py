@@ -8,7 +8,9 @@ Created on Thu Mar  8 16:04:28 2018
 
 @author: Jérémy
 """
-
+import Tree
+import DictionaryRow
+import pickle
 import spacy
 nlp = spacy.load('fr')
 
@@ -79,10 +81,15 @@ class OurTree:
         """
         #TODO
         
-    def __recTree__(self, wordList, coef):
+    def __calcCoefWithTree__(self, wordList):
         """
-        This method create recursivly the tree and calculate coeficients.
+        This method create a tree and calculate coeficients.
         Param : wordlist : list of string : list of sentence lemmas.
         Return : float : the coefficient of the list
         """
-        #TODO
+        root = Tree()
+        
+        with open("dico.txt", 'rb') as dictionary:
+            depickler = pickle.Unpickler(dictionary)
+            row = depickler.load()
+            print(row)
