@@ -9,7 +9,8 @@ Created on Thu Mar  8 16:04:28 2018
 @author: Jérémy
 """
 import Tree
-import DictionaryRow
+from DictionaryRow import DictionaryRow
+from DictionaryNP import DictionaryNP
 import pickle
 import spacy
 nlp = spacy.load('fr')
@@ -89,7 +90,9 @@ class OurTree:
         """
         root = Tree()
         
-        with open("dico.txt", 'rb') as dictionary:
+        with open("dico", 'rb') as dictionary:
             depickler = pickle.Unpickler(dictionary)
-            row = depickler.load()
-            print(row)
+            dictNP = depickler.load()
+            
+        for row in dictNP.rowList:
+            print(row.word)

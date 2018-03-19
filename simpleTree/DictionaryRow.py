@@ -6,14 +6,9 @@ Created on Tue Mar 13 16:46:25 2018
 """
 
 class DictionaryRow:
-    def __init__(self):
-        self.word = None
-        self.nbAppearance = None
-        self.coefPositive = None
-        self.coefNegative = None
-        
-    def __init__(self, word, nbAppearance, coefPositive, coefNegative):
+    def __init__(self, word, coefPositive, coefNegative):
         self.word = word
-        self.nbAppearance = nbAppearance
+        self.nbAppearPositive = 1
         self.coefPositive = coefPositive
+        self.nbAppearNegative = 1
         self.coefNegative = coefNegative

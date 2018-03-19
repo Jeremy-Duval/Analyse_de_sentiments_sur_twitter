@@ -18,4 +18,4 @@ with open("dico", 'rb') as dictionary:
     dictNP = depickler.load()
     
 for row in dictNP.rowList:
-    print(row.word)
+    print("Mot : "+str(row.word)+"\n "+str(row.nbAppearPositive)+" - "+str(row.coefPositive)+"\n "+str(row.nbAppearNegative)+" - "+str(row.coefNegative))
