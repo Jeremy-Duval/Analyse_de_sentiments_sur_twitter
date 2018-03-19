@@ -11,3 +11,9 @@ class DictionaryRow:
         self.nbAppearance = None
         self.coefPositive = None
         self.coefNegative = None
+        
+    def __init__(self, word, nbAppearance, coefPositive, coefNegative):
+        self.word = word
+        self.nbAppearance = nbAppearance
+        self.coefPositive = coefPositive
+        self.coefNegative = coefNegative

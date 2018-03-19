@@ -7,40 +7,19 @@ Created on Tue Mar 13 16:54:56 2018
 @author: jeremy
 """
 from DictionaryRow import DictionaryRow
+from DictionaryNP import DictionaryNP
 import pickle
 
 
-row = DictionaryRow()
+dictNP = DictionaryNP()
 
-with open('dico.txt', 'wb') as dictionary:
-    pickler = pickle.Pickler(dictionary)
-    
-    row.word = "joyeux"
-    row.nbAppearance = 1
-    row.coefPositive = 1.0
-    row.coefNegative = None
-    pickler.dump(row)#save the row
-    
-    row.word = "triste"
-    row.nbAppearance = 1
-    row.coefPositive = None
-    row.coefNegative = 1.0
-    pickler.dump(row)#save the row
-    
-    row.word = "exité"
-    row.nbAppearance = 1
-    row.coefPositive = 1.0
-    row.coefNegative = 1.0
-    pickler.dump(row)#save the row
-    
-    row.word = "anxieux"
-    row.nbAppearance = 1
-    row.coefPositive = None
-    row.coefNegative = 1.0
-    pickler.dump(row)#save the row
-    
-    row.word = "heureux"
-    row.nbAppearance = 1
-    row.coefPositive = 1.0
-    row.coefNegative = None
-    pickler.dump(row)#save the row
+with open('dico', 'wb') as dictionary:
+    pickler = pickle.Pickler(dictionary, -1)
+    #add rows
+    dictNP.append(DictionaryRow("joyeux",1,1.0,None))
+    dictNP.append(DictionaryRow("triste",1,None,1.0))
+    dictNP.append(DictionaryRow("excité",1,1.0,1.0))
+    dictNP.append(DictionaryRow("anxieux",1,None,1.0))
+    dictNP.append(DictionaryRow("heureux",1,1.0,None))
+    #save the dictionary in file
+    pickler.dump(dictNP)
