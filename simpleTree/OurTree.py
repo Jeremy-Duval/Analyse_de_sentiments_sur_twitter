@@ -13,6 +13,8 @@ from DictionaryRow import DictionaryRow
 from DictionaryNP import DictionaryNP
 import pickle
 import spacy
+import unicodedata
+
 nlp = spacy.load('fr')
 
 
@@ -37,8 +39,30 @@ class OurTree:
         Param : - strList : list of string : the function extract word of theirs strings
         Return : - list of list of string : for each string in param, we return 
                  a list of important word.
+        @author: Jenny,modified by Jérémy
         """
-        #TODO
+        listListWord = list()
+        
+        for sentence in strList :
+            sentUni1 = unicode(sentence,'utf-8')
+            sentUni2 = unicodedata.normalize('NFD', sentUni1).encode('ascii', 'ignore')  
+            doc = nlp(sentUni2.decode('unicode-escape'))
+            listListWord.append(self.__lemma__(doc))
+        return listListWord
+    
+    def __lemma__(self, doc):
+        """
+        This method return the list of important words for the sentence.
+        Param : - doc : spacy unicode document : the sentence from where we extract words
+        Return : - list of string : list of words extract from the sentence
+        @author: Jenny,modified by Jérémy
+        """
+        listWord = list()
+        for token in doc:
+            if token.pos_ == 'ADJ' or token.pos_ == 'SYM' or token.pos_ == 'ADV' or token.pos_ == 'VERB':
+                listWord.append(token.lemma_)
+        return listWord
+
         
     def lemToCoef(self, dStrList):
         """

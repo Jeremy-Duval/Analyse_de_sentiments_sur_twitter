@@ -11,11 +11,24 @@ from DictionaryNP import DictionaryNP
 
 
 oTree = OurTree()
-
+"""
 with open("dico", 'rb') as dictionary:
     depickler = pickle.Unpickler(dictionary)
     
     dictNP = depickler.load()
-    
+
 for row in dictNP.rowList:
     print("Mot : "+str(row.word)+"\n "+str(row.nbAppearPositive)+" - "+str(row.coefPositive)+"\n "+str(row.nbAppearNegative)+" - "+str(row.coefNegative))
+"""
+
+msg = ["J\'ai faim",
+          "La vie est belle",
+          "J\'aime les chats",
+          "Je pense que excité",
+          "Je suis aimé !"]
+          
+listWordMsg=oTree.lemnise(msg)
+
+for i in listWordMsg :
+    for j in i :
+        print(j)
