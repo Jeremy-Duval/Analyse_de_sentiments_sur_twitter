@@ -8,7 +8,7 @@ Created on Thu Mar  8 16:04:28 2018
 
 @author: Jérémy
 """
-import Tree
+from Tree import Tree
 from DictionaryRow import DictionaryRow
 from DictionaryNP import DictionaryNP
 import pickle
@@ -72,6 +72,8 @@ class OurTree:
         Return : - list of float : coefficients (<0 if negative, else positive)
         """
         #TODO
+            #-call Tree
+            #-actualize dico (coef et mots potentiels)
         
     def calculateCoef(self, coefList):
         """
@@ -117,6 +119,56 @@ class OurTree:
         with open("dico", 'rb') as dictionary:
             depickler = pickle.Unpickler(dictionary)
             dictNP = depickler.load()
-            
-        for row in dictNP.rowList:
-            print(row.word)
+        
+        self.__constructTree__(wordList, root, dictNP)
+        
+        #TODO : return global coef
+                    
+    def __constructTree__(self, wordList, root, dictNP):
+        """
+        This method create a tree and calculate coeficients recursively.
+        Param : wordlist : list of string : list of sentence lemmas.
+                root : Tree : the root of the tree.
+                dico : DictionaryNP : a dictionary of word with theirs +/- correspondance
+        Return : list of string : list of word to add in dictionary
+        """
+        listCandidate = list()  
+        listReturned = list()
+        wordIsCandidate=False #var to know if the word is already in dictionary and if we need to add it  
+        
+        if root.data != None :
+            coef=root.data
+        else :
+            coef = 0
+        
+        if wordList==[] :
+            pass
+        else :            
+            word = wordList.pop()
+            print("*******")            
+            print(word)
+            print("_______") 
+            for row in dictNP.rowList:
+                print(row.word)
+                if(row.word==word):
+                    print("ok")
+                    #a coef = coefRoot+coefWordActu ; (-CoefWordActu if negative)
+                    if(row.coefPositive!=None):
+                        posTree = Tree()
+                        posTree.data=row.coefPositive+coef
+                        root.left = posTree
+                        listReturned = self.__constructTree__(wordList, posTree, dictNP)
+                    elif(row.coefNegative!=None):
+                        negTree = Tree()
+                        negTree.data=-row.coefNegative+coef
+                        root.right = negTree
+                        listReturned = self.__constructTree__(wordList, negTree, dictNP)
+                    else :
+                        listCandidate.append(word)
+                        listReturned = self.__constructTree__(wordList, root, dictNP)
+            print("Retour mots candidats :")                        
+            print(listReturned)
+            if(listReturned!=[]):
+                listCandidate.extend(listReturned)
+                                
+        return listCandidate

@@ -18,8 +18,9 @@ with open('dico', 'wb') as dictionary:
     #add rows
     dictNP.append(DictionaryRow("joyeux",1.0, None))
     dictNP.append(DictionaryRow("triste",None,1.0))
-    dictNP.append(DictionaryRow("excité",1.0,1.0))
+    dictNP.append(DictionaryRow("excite",1.0,1.0))
     dictNP.append(DictionaryRow("anxieux",None,1.0))
     dictNP.append(DictionaryRow("heureux",1.0,None))
+    dictNP.append(DictionaryRow("aimer",1.0,None))
     #save the dictionary in file
     pickler.dump(dictNP)

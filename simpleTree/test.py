@@ -25,10 +25,14 @@ msg = ["J\'ai faim",
           "La vie est belle",
           "J\'aime les chats",
           "Je pense que excité",
-          "Je suis aimé !"]
+          "Je suis aimé ! C'est beau !"]
           
 listWordMsg=oTree.lemnise(msg)
 
+"""
 for i in listWordMsg :
     for j in i :
         print(j)
+"""
+for i in listWordMsg:
+    oTree.__calcCoefWithTree__(i)
