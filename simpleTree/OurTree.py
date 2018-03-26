@@ -71,30 +71,54 @@ class OurTree:
         Param : - dStrList : list of list of string : list of important word list.
         Return : - list of float : coefficients (<0 if negative, else positive)
         """
-        #TODO
-            #-call Tree
-            #-actualize dico (coef et mots potentiels)
+        listCoef = list()        
+        
+        for i in dStrList:
+            coef = self.__calcCoefWithTree__(i)
+            listCoef.append(coef)
+            #TODO : actualize dico (coef et mots potentiels)
+            
+        return listCoef
         
     def calculateCoef(self, coefList):
         """
         This method calculate the average of coefficients in the list.
         Param : coefList : list of float : list of coefficient 
                            (each of us correspond to a string treated before)
-        Return : - float : global coefficient
+        Return : - float : global coefficient (<0 if negative, else positive)
         """
-        #TODO
+        coef = 0.0
+        nbCoef = 0
         
-    def actualizeCoef(self, oldCoef, nbStr, dStrList):
+        for elmt in coefList:
+               coef = coef+elmt
+               nbCoef+=1
+               
+        coef = coef/nbCoef
+        
+        return coef
+        
+    def actualizeCoef(self, oldCoef, nbSubCoef, coefList):
         """
         This method calculate the new coefficient with the old.
         It permiss to use multi-threads or dynamic functionement working.
         Param : - oldCoef : float : the coefficient to actualize
-                - nbStr : int : the number of list of string use to calculate oldCoef
-                - dStrList : list of list of string : list of important word list.
-                             serve to recalculate the new coefficient
+                - nbSubCoef : int : the number of sub-coef use to calculate oldCoef
+                - coefList : list of float : list of coefficient 
+                           (each of us correspond to a string treated before)
         Return : - float : coefficient (<0 if negative, else positive)
         """
-        #TODO
+        coef = self.calculateCoef(coefList)
+        print(coefList)
+        nbCoef = len(coefList)
+        print(nbSubCoef)
+        print(nbCoef)
+        if(nbSubCoef==0)and(nbCoef==0):
+            coef = 0.0
+        else :
+            coef = (oldCoef*nbSubCoef + coef*nbCoef)/(nbSubCoef+nbCoef)
+        
+        return coef
         
     def __actualizeDico__(self, word, coefficient):
         """
@@ -128,13 +152,10 @@ class OurTree:
            listLeaf = list()
            self.__treeLeafsCoef__(root, listLeaf)
            for leaf in listLeaf:
-               print("Leaf :")
-               print(leaf)
                coef = coef+leaf
                div = div+abs(leaf)
-           coef = coef / div
-        print("coef :")
-        print(coef)
+           if (div!=0) : 
+               coef = coef / div
         
         return coef
                     
@@ -145,9 +166,6 @@ class OurTree:
                 root : Tree : the root of the tree.
                 dico : DictionaryNP : a dictionary of word with theirs +/- correspondance
         """
-        ##listCandidate = list()  
-        ##listReturned = list()
-        ##wordIsCandidate=False #var to know if the word is already in dictionary and if we need to add it  
         wordFind=False
         passInPos=False
         passInNeg=False
@@ -159,11 +177,7 @@ class OurTree:
             pass
         else :            
             word = wordList.pop()
-            print("*******")            
-            print(word)
-            ##print("_______") 
             for row in dictNP.rowList:
-                ##print(row.word)
                 if(row.word==word):
                     wordFind=True
                     #a coef = coefRoot+coefWordActu ; (-CoefWordActu if negative)
@@ -173,39 +187,22 @@ class OurTree:
                         posTree.data=row.coefPositive+coef
                         root.left = posTree
                         wordList2 = list(wordList) #if the word is + and - we need to clone the list to use it in - branch
-                        print("..........")
-                        print(str(posTree.data)+" | "+str(posTree.left)+" | "+str(posTree.right))
-                        print("..........")
-                        ##listReturned = self.__constructTree__(wordList, posTree, dictNP)
                         self.__constructTree__(wordList, posTree, dictNP)
                     if(row.coefNegative!=None):
                         passInNeg=True
                         negTree = Tree()
                         negTree.data=-row.coefNegative+coef
-                        print("..........")
-                        print(str(negTree.data)+" | "+str(negTree.left)+" | "+str(negTree.right))
-                        print("..........")
                         root.right = negTree
-                        ##listReturned = self.__constructTree__(wordList, negTree, dictNP)
                         if(passInPos):
                             self.__constructTree__(wordList2, negTree, dictNP)    
                         else :    
                             self.__constructTree__(wordList, negTree, dictNP)
                     if(passInPos!=True)and(passInNeg!=True):
-                        ##listCandidate.append(word)
-                        ##listReturned = self.__constructTree__(wordList, root, dictNP)
-                        print("..........")
-                        print("..........")
                         self.__constructTree__(wordList, root, dictNP)
             if (wordFind!=True) :
                 self.__constructTree__(wordList, root, dictNP)
-            ##print("Retour mots candidats :")                        
-            ##print(listReturned)
-            ##if(listReturned!=[]):
-                ##listCandidate.extend(listReturned)
-                                
-        ##return listCandidate
-                                
+            
+            
     def __treeLeafsCoef__(self, root, listLeafs) :
         """
         This method return a list with coefficients in tree's leafs.

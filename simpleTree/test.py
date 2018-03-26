@@ -28,6 +28,10 @@ msg = ["J\'ai faim",
           "Je suis aimé ! C'est beau !",
           "Ce n'est pas triste d'être joyeux"]
           
+msg2 = ["Vive les patates !",
+        "J'aime les frites !",
+        "Les chats sont beau et joyeux, je les aimes !"]
+          
 listWordMsg=oTree.lemnise(msg)
 
 """
@@ -35,5 +39,12 @@ for i in listWordMsg :
     for j in i :
         print(j)
 """
-for i in listWordMsg:
-    oTree.__calcCoefWithTree__(i)
+coefList = oTree.lemToCoef(listWordMsg)
+print(coefList)
+coef = oTree.calculateCoef(coefList)
+print(coef)
+"""
+coefList2 = oTree.lemToCoef(oTree.lemnise(msg2))
+coef = oTree.actualizeCoef(coef, 6, coefList2)
+print(coef)
+"""
