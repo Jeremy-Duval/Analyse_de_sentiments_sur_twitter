@@ -25,7 +25,8 @@ msg = ["J\'ai faim",
           "La vie est belle",
           "J\'aime les chats",
           "Je pense que excité",
-          "Je suis aimé ! C'est beau !"]
+          "Je suis aimé ! C'est beau !",
+          "Ce n'est pas triste d'être joyeux"]
           
 listWordMsg=oTree.lemnise(msg)
 

@@ -115,6 +115,8 @@ class OurTree:
         Return : float : the coefficient of the list
         """
         root = Tree()
+        coef = 0.0
+        div = 0.0
         
         with open("dico", 'rb') as dictionary:
             depickler = pickle.Unpickler(dictionary)
@@ -122,7 +124,19 @@ class OurTree:
         
         self.__constructTree__(wordList, root, dictNP)
         
-        #TODO : return global coef
+        if (root.left!=None) or (root.right!=None) :
+           listLeaf = list()
+           self.__treeLeafsCoef__(root, listLeaf)
+           for leaf in listLeaf:
+               print("Leaf :")
+               print(leaf)
+               coef = coef+leaf
+               div = div+abs(leaf)
+           coef = coef / div
+        print("coef :")
+        print(coef)
+        
+        return coef
                     
     def __constructTree__(self, wordList, root, dictNP):
         """
@@ -130,45 +144,80 @@ class OurTree:
         Param : wordlist : list of string : list of sentence lemmas.
                 root : Tree : the root of the tree.
                 dico : DictionaryNP : a dictionary of word with theirs +/- correspondance
-        Return : list of string : list of word to add in dictionary
         """
-        listCandidate = list()  
-        listReturned = list()
-        wordIsCandidate=False #var to know if the word is already in dictionary and if we need to add it  
-        
+        ##listCandidate = list()  
+        ##listReturned = list()
+        ##wordIsCandidate=False #var to know if the word is already in dictionary and if we need to add it  
+        wordFind=False
+        passInPos=False
+        passInNeg=False
         if root.data != None :
             coef=root.data
         else :
             coef = 0
-        
         if wordList==[] :
             pass
         else :            
             word = wordList.pop()
             print("*******")            
             print(word)
-            print("_______") 
+            ##print("_______") 
             for row in dictNP.rowList:
-                print(row.word)
+                ##print(row.word)
                 if(row.word==word):
-                    print("ok")
+                    wordFind=True
                     #a coef = coefRoot+coefWordActu ; (-CoefWordActu if negative)
                     if(row.coefPositive!=None):
+                        passInPos=True
                         posTree = Tree()
                         posTree.data=row.coefPositive+coef
                         root.left = posTree
-                        listReturned = self.__constructTree__(wordList, posTree, dictNP)
-                    elif(row.coefNegative!=None):
+                        wordList2 = list(wordList) #if the word is + and - we need to clone the list to use it in - branch
+                        print("..........")
+                        print(str(posTree.data)+" | "+str(posTree.left)+" | "+str(posTree.right))
+                        print("..........")
+                        ##listReturned = self.__constructTree__(wordList, posTree, dictNP)
+                        self.__constructTree__(wordList, posTree, dictNP)
+                    if(row.coefNegative!=None):
+                        passInNeg=True
                         negTree = Tree()
                         negTree.data=-row.coefNegative+coef
+                        print("..........")
+                        print(str(negTree.data)+" | "+str(negTree.left)+" | "+str(negTree.right))
+                        print("..........")
                         root.right = negTree
-                        listReturned = self.__constructTree__(wordList, negTree, dictNP)
-                    else :
-                        listCandidate.append(word)
-                        listReturned = self.__constructTree__(wordList, root, dictNP)
-            print("Retour mots candidats :")                        
-            print(listReturned)
-            if(listReturned!=[]):
-                listCandidate.extend(listReturned)
+                        ##listReturned = self.__constructTree__(wordList, negTree, dictNP)
+                        if(passInPos):
+                            self.__constructTree__(wordList2, negTree, dictNP)    
+                        else :    
+                            self.__constructTree__(wordList, negTree, dictNP)
+                    if(passInPos!=True)and(passInNeg!=True):
+                        ##listCandidate.append(word)
+                        ##listReturned = self.__constructTree__(wordList, root, dictNP)
+                        print("..........")
+                        print("..........")
+                        self.__constructTree__(wordList, root, dictNP)
+            if (wordFind!=True) :
+                self.__constructTree__(wordList, root, dictNP)
+            ##print("Retour mots candidats :")                        
+            ##print(listReturned)
+            ##if(listReturned!=[]):
+                ##listCandidate.extend(listReturned)
                                 
-        return listCandidate
+        ##return listCandidate
+                                
+    def __treeLeafsCoef__(self, root, listLeafs) :
+        """
+        This method return a list with coefficients in tree's leafs.
+        Param : root : Tree : the root of the tree.
+                listLeafs : list of float : list wich will contains 
+                                            coefficients in tree's leafs.
+        """
+        if (root.left==None) and (root.right==None) :
+            listLeafs.append(root.data)
+        else:
+            if(root.left!=None):
+                self.__treeLeafsCoef__(root.left, listLeafs)
+                
+            if(root.right!=None):
+                self.__treeLeafsCoef__(root.right, listLeafs)
