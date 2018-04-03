@@ -79,11 +79,7 @@ class OurTree:
             listCoef.append(coef)
             #actualisation of dictionary
             print(j)
-            for word in j :     
-                print("word :")
-                print(word)
-                print("coef :")
-                print(coef)
+            for word in j :  
                 self.__actualizeDico__(word, coef)
             
         return listCoef
@@ -117,10 +113,7 @@ class OurTree:
         Return : - float : coefficient (<0 if negative, else positive)
         """
         coef = self.calculateCoef(coefList)
-        print(coefList)
         nbCoef = len(coefList)
-        print(nbSubCoef)
-        print(nbCoef)
         if(nbSubCoef==0)and(nbCoef==0):
             coef = 0.0
         else :
@@ -143,45 +136,7 @@ class OurTree:
             dictNP = depickler.load()
             
             openDic = True
-            ##############################################
-            with open("dico", 'rb') as dictionary:
-                depickler = pickle.Unpickler(dictionary)
-                
-                dictNP = depickler.load()
             
-            for row in dictNP.rowList:
-                print("Mot : "+str(row.word)+"\n "+str(row.nbAppearPositive)+" - "+str(row.coefPositive)+"\n "+str(row.nbAppearNegative)+" - "+str(row.coefNegative))
-            ##############################################
-            
-            print("word :")
-            print(word)
-            """
-            try :
-                index = dictNP.rowList.index(word)
-                row = dictNP.rowList.pop(index)
-                #update of the row
-                if(coefficient>0):
-                    if(row.coefPositive == None) :
-                        row.coefPositive = coefficient
-                    else :
-                        row.coefPositive = (row.coefPositive*row.nbAppearPositive + coefficient)/row.nbAppearPositive+1
-                        row.nbAppearPositive += 1 
-                if(coefficient<0):
-                    if(row.coefNegative == None) :
-                        row.coefNegative = coefficient
-                    else :
-                        row.coefNegative = (row.coefNegative*row.nbAppearNegative -coefficient)/row.nbAppearNegative+1
-                        row.nbAppearNegative += 1 
-                #Re-insertion of the row, after the update
-                dictNP.rowList.append(row)
-                        
-            except ValueError : #if the word doesn't exist in the dictionary, we add it
-                print("err")                
-                if(coefficient>0) :
-                    dictNP.append(DictionaryRow(word,coefficient,None))
-                if(coefficient<0) :
-                    dictNP.append(DictionaryRow(word,None,-coefficient))
-            """
             index = 0
             found=False
             for row in dictNP.rowList :
