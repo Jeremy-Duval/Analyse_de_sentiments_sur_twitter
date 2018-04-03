@@ -42,7 +42,7 @@ class listener(StreamListener):
           self.liste.append(tweet)
           print((self.compteur,username,tweet))
           #print(self.liste[self.compteur-1])
-          if self.compteur >= 3:
+          if self.compteur >= 100:
               #self.mon_fichier.close()  
               return False
           return True   
@@ -56,7 +56,7 @@ class listener(StreamListener):
         print(status)
 
     def getTrends(self):
-        trends1 = api.trends_place(1) # from the end of your code
+        trends1 = api.trends_place(23424819) # france
         # trends1 is a list with only one element in it, which is a 
         # dict which we'll put in data.
         data = trends1[0] 
@@ -64,9 +64,8 @@ class listener(StreamListener):
         trends = data['trends']
         # grab the name from each trend
         names = [trend['name'] for trend in trends]
-        # put all the names together with a ' ' separating them
-        trendsName = ' '.join(names)
-        print(trendsName)
+        return names
+        
 #twitterStream = Stream(auth, listener())
 #le contenu de la recherche se met ici dans track
 #twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)

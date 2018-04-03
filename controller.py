@@ -11,7 +11,7 @@ import tweeter
 def init_tweet(valeur):
     Listener = tweeter.listener()
     twitterStream = tweeter.Stream(tweeter.auth, Listener)
-    #le contenu de la recherche se met ici dans track
-    twitterStream.listener.getTrends()
-    twitterStream.filter(track=[valeur],languages = ["fr"], stall_warnings = True)
+    tandances = twitterStream.listener.getTrends()
+    print tandances[0]
+    twitterStream.filter(track=[tandances[0]],languages = ["fr"], stall_warnings = True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
