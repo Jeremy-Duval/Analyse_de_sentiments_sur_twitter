@@ -55,6 +55,18 @@ class listener(StreamListener):
     def on_error(self, status):
         print(status)
 
+    def getTrends(self):
+        trends1 = api.trends_place(1) # from the end of your code
+        # trends1 is a list with only one element in it, which is a 
+        # dict which we'll put in data.
+        data = trends1[0] 
+        # grab the trends
+        trends = data['trends']
+        # grab the name from each trend
+        names = [trend['name'] for trend in trends]
+        # put all the names together with a ' ' separating them
+        trendsName = ' '.join(names)
+        print(trendsName)
 #twitterStream = Stream(auth, listener())
 #le contenu de la recherche se met ici dans track
 #twitterStream.filter(track=["france"],languages = ["fr"], stall_warnings = True)
