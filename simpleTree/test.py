@@ -24,7 +24,7 @@ for row in dictNP.rowList:
 msg = ["J\'ai faim",
           "La vie est belle",
           "J\'aime les chats",
-          "Je pense que excité",
+          "Je pense que je suis excité",
           "Je suis aimé ! C'est beau !",
           "Ce n'est pas triste d'être joyeux"]
           
@@ -39,6 +39,7 @@ for i in listWordMsg :
     for j in i :
         print(j)
 """
+
 coefList = oTree.lemToCoef(listWordMsg)
 print(coefList)
 coef = oTree.calculateCoef(coefList)
@@ -48,3 +49,10 @@ coefList2 = oTree.lemToCoef(oTree.lemnise(msg2))
 coef = oTree.actualizeCoef(coef, 6, coefList2)
 print(coef)
 """
+with open("dico", 'rb') as dictionary:
+    depickler = pickle.Unpickler(dictionary)
+    
+    dictNP = depickler.load()
+
+for row in dictNP.rowList:
+    print("Mot : "+str(row.word)+"\n "+str(row.nbAppearPositive)+" - "+str(row.coefPositive)+"\n "+str(row.nbAppearNegative)+" - "+str(row.coefNegative))
