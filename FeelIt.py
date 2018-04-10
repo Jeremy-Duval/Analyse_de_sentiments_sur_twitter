@@ -9,6 +9,7 @@ Created on Mon Feb 26 08:46:28 2018
 from Tkinter import *
 import controller
 
+
         
 fenetre = Tk()
 
@@ -18,7 +19,7 @@ label.pack()
 fenetre['bg']='white'
 
 Frame1 = Frame(fenetre, borderwidth=2, relief=GROOVE)
-Frame1.pack(side=LEFT, padx=30, pady=30)
+Frame1.pack(side=TOP, padx=5, pady=5)
 
 Label(Frame1, text="Tweets recherchés").pack(padx=10, pady=10)
 
@@ -26,9 +27,22 @@ value = StringVar()
 entree = Entry(Frame1, textvariable=value, width=30)
 entree.pack()
 
+liste = Listbox(fenetre)
+tendance = controller.getTendance()
+i=1
+for x in tendance:
+    liste.insert(1,x)
+    i=i+1
+
+
+liste.pack()
+
 def saisie():
     valeur = entree.get()
     controller.init_tweet(valeur)
+
+
+
     
     
 bouton = Button(Frame1, text="Valider",command = saisie)
