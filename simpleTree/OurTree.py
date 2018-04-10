@@ -163,11 +163,12 @@ class OurTree:
                 #Re-insertion of the row, after the update
                 dictNP.rowList.append(row)
             else :
-                #print("err")                
-                if(coefficient>0) :
-                    dictNP.append(DictionaryRow(word,coefficient,None))
-                if(coefficient<0) :
-                    dictNP.append(DictionaryRow(word,None,-coefficient))
+                #print("err")
+                if(word!="ne")and(word!="pas"):                
+                    if(coefficient>0) :
+                        dictNP.append(DictionaryRow(word,coefficient,None))
+                    if(coefficient<0) :
+                        dictNP.append(DictionaryRow(word,None,-coefficient))
                     
             
         if(openDic==True) :
