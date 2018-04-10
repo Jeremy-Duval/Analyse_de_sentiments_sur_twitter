@@ -88,9 +88,8 @@ class OurTree:
                 if(word=="ne"):
                     negation=True
                 else:
-                    if(iWord<len(j)):
-                        if(j[iWord]=="pas"):
-                            negation=True
+                    if(iWord<len(j))and(j[iWord]=="pas"):
+                        negation=True
                     else :
                         if(word!="pas"):
                             if(iWord-3>=0)and(j[iWord-3]=="ne"):
@@ -99,7 +98,6 @@ class OurTree:
                                 negation = False
                     print(negation)
                     self.__actualizeDico__(word, coef)
-            #Comprendre pk [ne, pas, triste, etre, joyeux] : etre : negation = true
             #ajouter un param a actualizedico (negation)
             #traiter la negation en fonction de ce param (ex: si true, ne acutaliser coef+ mais coef-)
             
