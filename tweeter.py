@@ -23,7 +23,7 @@ class listener(StreamListener):
         self.liste=[]
         
     def on_data(self, data):
-        all_data = json.loads(data)
+        all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
 		# collect all desired data fields 
         if 'text' in all_data:
@@ -42,7 +42,7 @@ class listener(StreamListener):
           self.liste.append(tweet)
           print((self.compteur,username,tweet))
           #print(self.liste[self.compteur-1])
-          if self.compteur >= 15:
+          if self.compteur >= 3:
               #self.mon_fichier.close()  
               return False
           return True   
