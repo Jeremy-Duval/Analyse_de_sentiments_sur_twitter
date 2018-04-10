@@ -78,7 +78,7 @@ class OurTree:
             coef = self.__calcCoefWithTree__(i)
             listCoef.append(coef)
             #actualisation of dictionary
-            print(j)
+            #print(j)
             for word in j :  
                 self.__actualizeDico__(word, coef)
             
@@ -163,7 +163,7 @@ class OurTree:
                 #Re-insertion of the row, after the update
                 dictNP.rowList.append(row)
             else :
-                print("err")                
+                #print("err")                
                 if(coefficient>0) :
                     dictNP.append(DictionaryRow(word,coefficient,None))
                 if(coefficient<0) :
@@ -212,14 +212,31 @@ class OurTree:
         wordFind=False
         passInPos=False
         passInNeg=False
+        negation=False
         if root.data != None :
             coef=root.data
         else :
             coef = 0
         if wordList==[] :
             pass
-        else :            
+        else :
             word = wordList.pop()
+            
+            if(word=="pas"): #test of negative form : Ne mot Pas ; Ne Pas mot ; mot Pas (pop take the last word, so we treat the list backward)
+                negation=True
+                word = wordList.pop()
+                if(len(wordList)>0):
+                    if(wordList[len(wordList)-1]=="ne"):
+                        wordList.pop() 
+            else:
+                if(len(wordList)>0):
+                    if(wordList[len(wordList)-1]=="pas"):
+                        if(len(wordList)>1):
+                            if(wordList[len(wordList)-2]=="ne"):
+                                negation=True
+                                wordList.pop()
+                                wordList.pop()
+                                
             for row in dictNP.rowList:
                 if(row.word==word):
                     wordFind=True
@@ -227,15 +244,23 @@ class OurTree:
                     if(row.coefPositive!=None):
                         passInPos=True
                         posTree = Tree()
-                        posTree.data=row.coefPositive+coef
-                        root.left = posTree
+                        if(negation): #if we are in a negation, we invert the polarity of the word, so we call -coefPositive for the negative branch
+                            posTree.data=-row.coefPositive+coef
+                            root.right = posTree
+                        else :
+                            posTree.data=row.coefPositive+coef
+                            root.left = posTree
                         wordList2 = list(wordList) #if the word is + and - we need to clone the list to use it in - branch
                         self.__constructTree__(wordList, posTree, dictNP)
                     if(row.coefNegative!=None):
                         passInNeg=True
                         negTree = Tree()
-                        negTree.data=-row.coefNegative+coef
-                        root.right = negTree
+                        if(negation): #if we are in a negation, we invert the polarity of the word, so we call coefNegative for the positive branch
+                            negTree.data=row.coefNegative+coef
+                            root.left = negTree
+                        else :
+                            negTree.data=-row.coefNegative+coef
+                            root.right = negTree
                         if(passInPos):
                             self.__constructTree__(wordList2, negTree, dictNP)    
                         else :    

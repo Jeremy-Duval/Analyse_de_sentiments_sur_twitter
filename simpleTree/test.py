@@ -26,7 +26,8 @@ msg = ["J\'ai faim",
           "J\'aime les chats",
           "Je pense que je suis excité",
           "Je suis aimé ! C'est beau !",
-          "Ce n'est pas triste d'être joyeux"]
+          "Ce n'est pas triste d'être joyeux",
+          "Je n\'aime pas être triste"]
           
 msg2 = ["Vive les patates !",
         "J'aime les frites !",
