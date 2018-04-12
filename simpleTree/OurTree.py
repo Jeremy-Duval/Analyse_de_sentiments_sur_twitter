@@ -97,9 +97,7 @@ class OurTree:
                             else :                                
                                 negation = False
                     print(negation)
-                    self.__actualizeDico__(word, coef)
-            #ajouter un param a actualizedico (negation)
-            #traiter la negation en fonction de ce param (ex: si true, ne acutaliser coef+ mais coef-)
+                    self.__actualizeDico__(word, coef, negation)
             
         return listCoef
         
@@ -140,7 +138,7 @@ class OurTree:
         
         return coef
         
-    def __actualizeDico__(self, word, coefficient):
+    def __actualizeDico__(self, word, coefficient, negation):
         """
         This method actualize the dictionary file, with the new coefficient, 
         for each string treated. 
@@ -148,6 +146,7 @@ class OurTree:
                          the file, it will be add)
                 - coefficient : float : the coefficient of the string where 
                                 appear the word.
+                - negation : boolean : true if we are in a case of negation, false else
         Return : /
         """
         with open("dico", 'rb') as dictionary:
@@ -167,17 +166,19 @@ class OurTree:
             
             if(found ==True) :
                 #update of the row
-                if(coefficient>0):
+                #if the coef is positive in a normal case or if the coef is negative in a negation case (so it's a positive word)
+                if((coefficient>0)and(negation==False))or((coefficient<0)and(negation==True)):
                     if(row.coefPositive == None) :
-                        row.coefPositive = coefficient
+                        row.coefPositive = abs(coefficient)
                     else :
-                        row.coefPositive = (row.coefPositive*row.nbAppearPositive + coefficient)/(row.nbAppearPositive+1)
+                        row.coefPositive = (row.coefPositive*row.nbAppearPositive + abs(coefficient))/(row.nbAppearPositive+1)
                         row.nbAppearPositive += 1 
-                if(coefficient<0):
+                #if the coef is negative in a normal case or if the coef is positive in a negation case (so it's a negative word)
+                if((coefficient<0)and(negation==False))or((coefficient>0)and(negation==True)): 
                     if(row.coefNegative == None) :
-                        row.coefNegative = coefficient
+                        row.coefNegative = abs(coefficient)
                     else :
-                        row.coefNegative = (row.coefNegative*row.nbAppearNegative -coefficient)/(row.nbAppearNegative+1)
+                        row.coefNegative = (row.coefNegative*row.nbAppearNegative + abs(coefficient))/(row.nbAppearNegative+1)
                         row.nbAppearNegative += 1 
                 #Re-insertion of the row, after the update
                 dictNP.rowList.append(row)
