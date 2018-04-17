@@ -5,48 +5,32 @@ Created on Mon Feb 26 08:46:28 2018
 
 @author: rukiny
 """
-
-from Tkinter import *
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+from flask import Flask, request, render_template
 import controller
 
-
-        
-fenetre = Tk()
-
-label = Label(fenetre, text="Feel It")
-label.pack()
-
-fenetre['bg']='white'
-
-Frame1 = Frame(fenetre, borderwidth=2, relief=GROOVE)
-Frame1.pack(side=TOP, padx=5, pady=5)
-
-Label(Frame1, text="Tweets recherchés").pack(padx=10, pady=10)
-
-value = StringVar() 
-entree = Entry(Frame1, textvariable=value, width=30)
-entree.pack()
-
-liste = Listbox(fenetre)
-tendance = controller.getTendance()
-i=1
-for x in tendance:
-    liste.insert(1,x)
-    i=i+1
+app = Flask(__name__)
 
 
-liste.pack()
+#Lancer http://localhost:5000/ pour voir la page
 
-def saisie():
-    valeur = entree.get()
-    controller.init_tweet(valeur)
+@app.route('/')
+def accueil():
+    tendance = controller.getTendance()
 
+    return render_template('accueil.html', titre="Feel it !", mots=tendance)
 
+@app.route('/tweet/<mot>')
+@app.route('/tweet/#<mot>')
+def recupTweet(mot):
+    tendance = controller.getTendance()
+    mots = controller.init_tweet(mot)
+    return render_template('accueil.html', titre="Feel it !", mots=tendance)
 
-    
-    
-bouton = Button(Frame1, text="Valider",command = saisie)
-bouton.pack()
+if __name__ == '__main__':
 
-fenetre.mainloop()
+    app.run(debug=True)
+
 
