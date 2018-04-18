@@ -36,18 +36,21 @@ def init_tweet(valeur):
     #tableau_positifs.pop(0)
     #tableau_positifs.append('U0001f62d')
     print tableau_positifs
-    twitterStream.filter(track=[u'\U0001f600'],languages = ["fr"], stall_warnings = True)
+    twitterStream.filter(track=[tandances[1]],languages = ["fr"], stall_warnings = True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
     indices =[]
     for emojis in tableau_positifs:
         print emojis.lower()
         indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8')]#chercher les emojis avec ça
         #whatisthis(s)
-        print indices_traitement
-        indices = indices_traitement#list(set(indices)|set(indices_traitement))
+        #print indices_traitement
+        indices = indices_traitement
+        list(set(indices)|set(indices_traitement))
     print indices
+    return indices
     #MachineLearning(liste)
-    
+
+  
 def getTendance():
     Listener = tweeter.listener()
     twitterStream = tweeter.Stream(tweeter.auth, Listener)

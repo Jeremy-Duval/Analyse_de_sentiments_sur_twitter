@@ -27,7 +27,12 @@ def accueil():
 def recupTweet(mot):
     tendance = controller.getTendance()
     mots = controller.init_tweet(mot)
+    
     return render_template('accueil.html', titre="Feel it !", mots=tendance)
+
+@app.route('/Recherche')
+def test():
+    indices = controller.init_tweet(" ")
 
 if __name__ == '__main__':
 
