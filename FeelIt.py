@@ -10,6 +10,10 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 from flask import Flask, request, render_template
 import controller
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
+class RechercheForm(Form):
+    recherche = StringField('Recherche', [validators.Length(min=4, max=25)])
 
 app = Flask(__name__)
 
@@ -19,23 +23,28 @@ app = Flask(__name__)
 @app.route('/')
 def accueil():
     tendance = controller.getTendance()
-
-    return render_template('accueil.html', titre="Feel it !", mots=tendance,result="Voici la page d'accueil !")
+    mots = "Voici la page d'accueil !"
+    form = RechercheForm(request.form)
+    if request.method == 'GET':      
+        mots = controller.getListeTweet(form.recherche.data)
+        
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
 @app.route('/<mot>')
 @app.route('/#<mot>')
 def recupTweet(mot):
     tendance = controller.getTendance()
-    mots = controller.getListeTweet(" ")
-    
-    return render_template('accueil.html', titre="Feel it !", mots=tendance,result=mots)
+    mots = controller.getListeTweet(mot)
+    form = RechercheForm(request.form)
+    if request.method == 'GET':      
+        mots = controller.getListeTweet(form.recherche.data)
+        
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
-@app.route('/Recherche')
-def test():
-    indices = controller.getListeTweet(" ")
 
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
 
