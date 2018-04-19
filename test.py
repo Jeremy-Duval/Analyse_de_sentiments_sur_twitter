@@ -34,3 +34,8 @@ liste.pack()
 def saisie():
     valeur = entree.get()
     controller.init_tweet(valeur)
+    
+bouton = Button(Frame1, text="Valider",command = saisie)
+bouton.pack()
+    
+fenetre.mainloop()

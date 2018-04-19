@@ -18,13 +18,16 @@ from sklearn.metrics import accuracy_score
 
 
 
-def whatisthis(s):
-    if isinstance(s, str):
-        print "ordinary string"
-    elif isinstance(s, unicode):
-        print "unicode string"
-    else:
-        print "not a string"
+
+# =============================================================================
+# def whatisthis(s):
+#     if isinstance(s, str):
+#         print "ordinary string"
+#     elif isinstance(s, unicode):
+#         print "unicode string"
+#     else:
+#         print "not a string"
+# =============================================================================
 
 def init_tweet():
     Listener = tweeter.listener()
@@ -35,22 +38,39 @@ def init_tweet():
 def getListeTweet(valeur):
     twitterStream = init_tweet()
     tendance = twitterStream.listener.getTrends()
+    print tendance[0]
     #teststring = unicode("😀😃😄😁😆😅😂🤣☺️😊🙂😇🙃😉😌😍😋🙋", 'utf-8')
     #teststring = teststring.encode('unicode_escape')
-    teststring = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋"
-    tableau_positifs = teststring.split(" ")
-    #tableau_positifs.pop(0)
-    #tableau_positifs.append('U0001f62d')
-    twitterStream.filter(track=[tendance[1]],languages = ["fr"], stall_warnings = True)
+   
+    twitterStream.filter(track=[tendance[0]],languages = ["fr"], stall_warnings = True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
-    indices =[]
+    stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
+    tableau_positifs = stringpos.split(" ")
+    indicesp =[]
     for emojis in tableau_positifs:
-        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8')]#chercher les emojis avec ça
-        #whatisthis(s)
+        #print emojis.lower()
+        indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
         #print indices_traitement
-        indices = indices_traitement
-        list(set(indices)|set(indices_traitement))
-    return indices[0]
+        #print indices_traitement
+        indicesp = indicesp + indices_traitementp
+    liste_positifs = list(set(indicesp))
+    print liste_positifs
+    
+    stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
+    tableau_negatifs = stringneg.split(" ")
+    indicesn =[]
+    for emojis in tableau_negatifs:
+        #print emojis.lower()
+        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
+        #print indices_traitement
+        #print indices_traitement
+        indicesn = indicesn + indices_traitement
+    liste_negatifs = list(set(indicesn))
+    print liste_negatifs
+    
+    
+    
+    return liste_positifs
   
 def getTendance():
     twitterStream = init_tweet()

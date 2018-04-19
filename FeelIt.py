@@ -32,7 +32,7 @@ def recupTweet(mot):
 
 @app.route('/Recherche')
 def test():
-    indices = controller.init_tweet(" ")
+    indices = controller.getListeTweet(" ")
 
 if __name__ == '__main__':
 
