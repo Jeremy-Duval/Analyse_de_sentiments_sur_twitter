@@ -22,8 +22,8 @@ def accueil():
 
     return render_template('accueil.html', titre="Feel it !", mots=tendance,result="Voici la page d'accueil !")
 
-@app.route('/tweet/<mot>')
-@app.route('/tweet/#<mot>')
+@app.route('/<mot>')
+@app.route('/#<mot>')
 def recupTweet(mot):
     tendance = controller.getTendance()
     mots = controller.getListeTweet(" ")

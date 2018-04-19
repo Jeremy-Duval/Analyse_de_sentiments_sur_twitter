@@ -32,14 +32,22 @@
 		<div class="list-group col-3 text-center text-primary">
 			<h1 class="border-right-primary">Tweet populaire</h1>
 			{% for mot in mots %}
-				<a href="tweet/{{ mot }}" class="list-group-item list-group-item-action mx-auto">{{ mot }}</a>
+				<a href="{{ mot }}" class="list-group-item list-group-item-action mx-auto">{{ mot }}</a>
 			{% endfor %}
 		</div>
 
 		<div class="col-9">
-			{{ result }}
+      <p class="text-center mt-3">
+			     {{ result }}
+      </p>
 		</div>
 	</div>
+
+  <div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">BENDRIS Zackaria - DUVAL Jeremy - NGUYEN Jenny</h5>
+  </div>
+</div>
     </body>
 
 </html>
