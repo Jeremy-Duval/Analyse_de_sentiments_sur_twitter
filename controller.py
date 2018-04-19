@@ -15,6 +15,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
+
+
+
 def whatisthis(s):
     if isinstance(s, str):
         print "ordinary string"
@@ -23,39 +26,36 @@ def whatisthis(s):
     else:
         print "not a string"
 
-def init_tweet(valeur):
+def init_tweet():
     Listener = tweeter.listener()
     twitterStream = tweeter.Stream(tweeter.auth, Listener)
-    tandances = twitterStream.listener.getTrends()
-    print tandances[1]
+    return twitterStream
+    #MachineLearning(liste)
+
+def getListeTweet(valeur):
+    twitterStream = init_tweet()
+    tendance = twitterStream.listener.getTrends()
     #teststring = unicode("😀😃😄😁😆😅😂🤣☺️😊🙂😇🙃😉😌😍😋🙋", 'utf-8')
     #teststring = teststring.encode('unicode_escape')
     teststring = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋"
-    print teststring
     tableau_positifs = teststring.split(" ")
     #tableau_positifs.pop(0)
     #tableau_positifs.append('U0001f62d')
-    print tableau_positifs
-    twitterStream.filter(track=[tandances[1]],languages = ["fr"], stall_warnings = True)
+    twitterStream.filter(track=[tendance[1]],languages = ["fr"], stall_warnings = True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
     indices =[]
     for emojis in tableau_positifs:
-        print emojis.lower()
         indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8')]#chercher les emojis avec ça
         #whatisthis(s)
         #print indices_traitement
         indices = indices_traitement
         list(set(indices)|set(indices_traitement))
-    print indices
-    return indices
-    #MachineLearning(liste)
-
+    return indices[0]
   
 def getTendance():
-    Listener = tweeter.listener()
-    twitterStream = tweeter.Stream(tweeter.auth, Listener)
-    tandances = twitterStream.listener.getTrends()
-    return tandances
+    twitterStream = init_tweet()
+    tendance = twitterStream.listener.getTrends()
+    return tendance
     
     
 def TfidVectorizer(messages):
@@ -80,5 +80,3 @@ def MachineLearning(liste1,liste2):
     Ypredict = clf.predict(Xtest)
     accuracy_score(Ytest, Ypredict)
 
-    
-   

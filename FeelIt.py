@@ -20,15 +20,15 @@ app = Flask(__name__)
 def accueil():
     tendance = controller.getTendance()
 
-    return render_template('accueil.html', titre="Feel it !", mots=tendance)
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,result="Voici la page d'accueil !")
 
 @app.route('/tweet/<mot>')
 @app.route('/tweet/#<mot>')
 def recupTweet(mot):
     tendance = controller.getTendance()
-    mots = controller.init_tweet(mot)
+    mots = controller.getListeTweet(" ")
     
-    return render_template('accueil.html', titre="Feel it !", mots=tendance)
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,result=mots)
 
 @app.route('/Recherche')
 def test():

@@ -42,7 +42,7 @@ class listener(StreamListener):
           self.liste.append(tweet)
           print((self.compteur,username,tweet))
           #print(self.liste[self.compteur-1])
-          if self.compteur >= 50:
+          if self.compteur >= 2:
               #self.mon_fichier.close()  
               return False
           return True   
