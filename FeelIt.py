@@ -5,34 +5,46 @@ Created on Mon Feb 26 08:46:28 2018
 
 @author: rukiny
 """
-
-from Tkinter import *
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+from flask import Flask, request, render_template
 import controller
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
+class RechercheForm(Form):
+    recherche = StringField('Recherche', [validators.Length(min=4, max=25)])
+
+app = Flask(__name__)
+
+
+#Lancer http://localhost:5000/ pour voir la page
+
+@app.route('/')
+def accueil():
+    tendance = controller.getTendance()
+    mots = "Voici la page d'accueil !"
+    form = RechercheForm(request.form)
+    if request.method == 'GET':      
+        mots = controller.getListeTweet(form.recherche.data)
         
-fenetre = Tk()
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
-label = Label(fenetre, text="Feel It")
-label.pack()
+@app.route('/<mot>')
+@app.route('/#<mot>')
+def recupTweet(mot):
+    tendance = controller.getTendance()
+    mots = controller.getListeTweet(mot)
+    form = RechercheForm(request.form)
+    if request.method == 'GET':      
+        mots = controller.getListeTweet(form.recherche.data)
+        
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
-fenetre['bg']='white'
 
-Frame1 = Frame(fenetre, borderwidth=2, relief=GROOVE)
-Frame1.pack(side=LEFT, padx=30, pady=30)
+if __name__ == '__main__':
 
-Label(Frame1, text="Tweets recherchés").pack(padx=10, pady=10)
+    app.run(debug=True)
 
-value = StringVar() 
-entree = Entry(Frame1, textvariable=value, width=30)
-entree.pack()
 
-def saisie():
-    valeur = entree.get()
-    controller.init_tweet(valeur)
-    
-    
-bouton = Button(Frame1, text="Valider",command = saisie)
-bouton.pack()
-
-fenetre.mainloop()
 

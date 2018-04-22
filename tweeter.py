@@ -1,3 +1,5 @@
+from __future__ import print_function
+import sys
 import tweepy
 from tweepy import Stream
 from tweepy.streaming import StreamListener
@@ -23,7 +25,7 @@ class listener(StreamListener):
         self.liste=[]
         
     def on_data(self, data):
-        all_data = json.loads(data)
+        all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
 		# collect all desired data fields 
         if 'text' in all_data:
@@ -40,9 +42,9 @@ class listener(StreamListener):
           
           self.compteur=self.compteur+1
           self.liste.append(tweet)
-          print((self.compteur,username,tweet))
+          print((self.compteur,username,tweet),file=sys.stderr)
           #print(self.liste[self.compteur-1])
-          if self.compteur >= 100:
+          if self.compteur >= 20:
               #self.mon_fichier.close()  
               return False
           return True   
