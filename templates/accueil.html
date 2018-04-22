@@ -1,53 +1,100 @@
 <!DOCTYPE html>
-
-<html>
-
-    <head>
-
-        <meta charset="utf-8" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-        <title>{{ titre }}</title>
-
-    </head>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Feel it !</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 
 
-    <body class="w-75 mx-auto border-primary">
-	<blockquote class="blockquote text-center card text-primary mb-0">
-        	<p class="display-1">{{ titre }}</p>
-	</blockquote>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-	    <form class="form-inline my-2 my-lg-0 mx-auto" method="GET">
-          {{ form.recherche }}
-		      <button class="btn btn-outline-primary bg-white my-2 my-sm-0" type="submit">Recherche de tweet</button>
-		</form>
-	  </div>
-	</nav>
-	<div class="row mr-0 ml-0">
-		<div class="list-group col-3 text-center text-primary">
-			<h1 class="border-right-primary">Tweet populaire</h1>
-			{% for mot in mots %}
-				<a href="{{ mot }}" class="list-group-item list-group-item-action mx-auto">{{ mot }}</a>
-			{% endfor %}
-		</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
-		<div class="col-9">
-      <p class="text-center mt-3">
-			     {{ result }}
-      </p>
-		</div>
-	</div>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    <link rel="stylesheet" href="css/style.css">
 
-  <div class="card text-center">
-  <div class="card-body">
-    <h5 class="card-title">BENDRIS Zackaria - DUVAL Jeremy - NGUYEN Jenny</h5>
-  </div>
+
+
+</head>
+<body ng-controller="ctrl as ctrl">
+
+<nav layout="row" class="navbar">
+    <div flex="33"></div>
+    <div flex="33" layout-align="center center" class="center-align">
+        <h3>Feel it !</h3>
+    </div>
+    <div flex="33"></div>
+</nav>
+
+<div class="container" layout="column">
+
+    <div flex layout="row" class="research-container" layout-align="center center">
+        <div flex="50" layout="row" layout-align="end center">
+            <md-input-container class="full-width">
+                <label>Rechercher un mot clé dans les tweets</label>
+                <input ng-model="research" type="text">
+            </md-input-container>
+            <md-button class="md-raised md-primary research-btn" ng-click="ctrl.searchForTweet(research);">Recherche</md-button>
+        </div>
+    </div>
+
+    <div flex layout="row">
+
+        <div flex="25" layout="column">
+            <div flex="1" layout-align="center center">
+                <h4>
+                    Hashtags populaires
+                </h4>
+            </div>
+            <div flex="80">
+                <md-list flex layout="column">
+                    <md-subheader class="md-no-sticky hashtag-subheader">
+                        <div class="full-width subtitle-hashtags" layout="row" layout-align="start center">Ce qui se passe dans le monde</div>
+                        <div class="full-width research-container-hashtags">
+                            <md-input-container class="md-icon-float md-block">
+                                <!-- Use floating label instead of placeholder -->
+                                <label>Rechercher dans les Hashtags</label>
+                                <md-icon md-svg-src="images/icons/ic_youtube_searched_for_black_24px.svg" class="name"></md-icon>
+                                <input ng-model="ctrl.hahstagResearch" type="text">
+                            </md-input-container>
+                        </div>
+                    </md-subheader>
+                    <div class="hashtag-list">
+                        <md-list-item class="md-3-line" ng-repeat="hashtag in ctrl.hashtags"
+                                      ng-click="ctrl.searchForTweet(hashtag);"
+                                      ng-hide="ctrl.hahstagResearch && ctrl.hahstagResearch.length > 0 && !hashtag.includes(ctrl.hahstagResearch)">
+                            <div class="md-list-item-text" layout="column">
+                                <h3>[{ hashtag }]</h3>
+                            </div>
+                        </md-list-item>
+                    </div>
+                </md-list>
+            </div>
+        </div>
+
+        <div flex="75" layout="column">
+            <div flex layout="row" layout-align="center center">
+                <h2 ng-if="ctrl.researchDone">
+                    Résultat pour la recherche "[{ ctrl.researchDone }]":
+                </h2>
+            </div>
+            <div flex layout="row" layout-align="center" class="center-align">
+                <h4 ng-if="ctrl.researchResult">
+                    [{ ctrl.researchResult }]
+                </h4>
+            </div>
+        </div>
+    </div>
+
 </div>
-    </body>
 
+
+<script src="js/controller/ctrl.js" type="application/javascript"></script>
+
+<script src="js/service/srv.js" type="application/javascript"></script>
+</body>
 </html>

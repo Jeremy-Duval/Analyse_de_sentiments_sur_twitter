@@ -25,6 +25,8 @@ class listener(StreamListener):
         self.liste=[]
         
     def on_data(self, data):
+        MAX_TWEETS = 5
+
         all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
 		# collect all desired data fields 
@@ -44,7 +46,7 @@ class listener(StreamListener):
           self.liste.append(tweet)
           print((self.compteur,username,tweet),file=sys.stderr)
           #print(self.liste[self.compteur-1])
-          if self.compteur >= 20:
+          if self.compteur >= MAX_TWEETS:
               #self.mon_fichier.close()  
               return False
           return True   

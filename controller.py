@@ -42,12 +42,13 @@ def getListeTweet(valeur):
     #teststring = unicode("😀😃😄😁😆😅😂🤣☺️😊🙂😇🙃😉😌😍😋🙋", 'utf-8')
     #teststring = teststring.encode('unicode_escape')
    
-    twitterStream.filter(track=[tendance[0]],languages = ["fr"], stall_warnings = True)
+    twitterStream.filter(track=[str(valeur).encode('utf8')], languages=["fr"], stall_warnings=True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
-    
+
     listeSentiment = getListeSentiment(liste)
-    MachineLearn = MachineLearning(liste,listeSentiment)
+    MachineLearn = MachineLearning(liste, listeSentiment)
     return MachineLearn
+
     
 
 def getListeSentiment(liste):
