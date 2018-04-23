@@ -60,17 +60,6 @@ def send_js(path):
 
 
 
-#@app.route('/<mot>')
-#@app.route('/#<mot>')
-#def recupTweet(mot):
-#    tendance = controller.getTendance()
-#    mots = controller.getListeTweet(mot)
-#    form = RechercheForm(request.form)
-#    if request.method == 'GET':      
-#        mots = controller.getListeTweet(form.recherche.data)
-
-#    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
-
 
 if __name__ == '__main__':
 
