@@ -40,7 +40,7 @@ def getListeTweet(valeur):
 
     #teststring = unicode("😀😃😄😁😆😅😂🤣☺️😊🙂😇🙃😉😌😍😋🙋", 'utf-8')
     #teststring = teststring.encode('unicode_escape')
-   
+
     twitterStream.filter(track=[str(valeur).encode('utf8')], languages=["fr"], stall_warnings=True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
 
@@ -53,12 +53,12 @@ def MachineLearning(liste):
     #return str(len(listeTweetAvecEmoticone))+" "+str(len(listeSentiment)) + " " + str(len(liste))
     Xtransform = TfidVectorizer(listeTweetAvecEmoticone)
     Xtrain,Xtest,Ytrain,Ytest = train_test_split(Xtransform,listeSentiment,random_state=3)
-    
-    
-    
+
+
+
     clf = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=1000,max_leaf_nodes=100)
     clf.fit(Xtrain,Ytrain)
-    
+
     Ypredict = clf.predict(Xtest)
     sentiment = np.concatenate((Ytrain, Ypredict), axis=0)
 
@@ -78,7 +78,7 @@ def MachineLearning(liste):
         return "POSITIF à "+str((float(cptPositif)/len(listeTweetAvecEmoticone))*100)+"%"
     if cptNegatif > cptPositif:
         return "NEGATIF à "+str((float(cptNegatif)/len(listeTweetAvecEmoticone))*100)+"%"
-            
+
 
 
 def getListeAvecEcmoticone(liste):
@@ -95,11 +95,11 @@ def getListeAvecEcmoticone(liste):
         indicesp = indicesp + indices_traitementp
 
     liste_positifs = list(set(indicesp))
-    
+
     for i in liste_positifs:
         listeTweetAvecEmoticone.append(liste[i])
 
-        
+
     stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
     tableau_negatifs = stringneg.split(" ")
     indicesn =[]
@@ -111,11 +111,11 @@ def getListeAvecEcmoticone(liste):
         indicesn = indicesn + indices_traitement
     liste_negatifs = list(set(indicesn))
     print liste_negatifs
-    
+
     for i in liste_negatifs:
         listeTweetAvecEmoticone.append(liste[i])
 
-        
+
     return listeTweetAvecEmoticone
 
 def getListeSentiment(liste):
@@ -132,11 +132,11 @@ def getListeSentiment(liste):
         indicesp = indicesp + indices_traitementp
 
     liste_positifs = list(set(indicesp))
-    
+
     for i in liste_positifs:
         listeSentiment.append(1)
 
-        
+
     stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
     tableau_negatifs = stringneg.split(" ")
     indicesn =[]
@@ -148,15 +148,15 @@ def getListeSentiment(liste):
         indicesn = indicesn + indices_traitement
     liste_negatifs = list(set(indicesn))
     print liste_negatifs
-    
+
     for i in liste_negatifs:
         listeSentiment.append(-1)
 
-        
+
     return listeSentiment
 
 
-  
+
 def getTendance():
     twitterStream = init_tweet()
     tendance = twitterStream.listener.getTrends()
@@ -167,10 +167,10 @@ def getTendance():
 def TfidVectorizer(messages):
     vectWord = TfidfVectorizer(analyzer='word',ngram_range=(1,2),max_df = 0.95,min_df=0.05)
     dtmWord = vectWord.fit_transform(messages)
-    
+
     vectChar = TfidfVectorizer(analyzer='char',ngram_range=(3,5),max_df = 0.95,min_df=0.2)
     dtmChar = vectChar.fit_transform(messages)
 
     dtm = np.concatenate((dtmWord.toarray(), dtmChar.toarray()), axis=1)
-    
+
     return np.array(dtm)
