@@ -1,0 +1,60 @@
+/*
+VARIABLES
+ */
+* {
+    --blue: #1da1f2;
+}
+
+
+/*
+HELPERS
+ */
+.center-align{
+    text-align: center;
+}
+
+.container{
+    width: 85%;
+    margin: 0 auto;
+}
+
+.full-width{
+    width: 100%;
+}
+
+/*
+CUSTOMIZATION
+ */
+.navbar{
+    height: 50px;
+    background: var(--blue);
+    color: #FFFFFF;
+    margin-bottom: 15px;
+}
+
+.research-container .research-btn{
+    width: 150px !important;
+}
+
+.hashtag-list{
+    max-height: 550px;
+    overflow: auto;
+}
+
+.subtitle-hashtags{
+    height: 25px;
+}
+
+.hashtag-subheader{
+    height: 100px;
+}
+
+.modal-preloader{
+    width: 400px;
+    height: 400px;
+}
+
+md-dialog{
+    background: transparent;
+    box-shadow: none;
+}
