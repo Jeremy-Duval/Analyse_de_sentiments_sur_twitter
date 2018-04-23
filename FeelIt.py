@@ -32,7 +32,7 @@ def get_tweets():
 
 
 @app.route('/accueil')
-def accueil_stephane():
+def accueil():
     return render_template('accueil.html')
 
 
@@ -59,25 +59,6 @@ def send_js(path):
     return send_from_directory('css', path)
 
 
-@app.route('/')
-def accueil():
-    tendance = controller.getTendance()
-    mots = "Voici la page d'accueil !"
-    form = RechercheForm(request.form)
-    if request.method == 'GET':      
-        mots = controller.getListeTweet(form.recherche.data)
-    return render_template('accueil.html', titre="Feel it !", mots=tendance, form=form, result=mots)
-
-@app.route('/<mot>')
-@app.route('/#<mot>')
-def recupTweet(mot):
-    tendance = controller.getTendance()
-    mots = controller.getListeTweet(mot)
-    form = RechercheForm(request.form)
-    if request.method == 'GET':      
-        mots = controller.getListeTweet(form.recherche.data)
-
-    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
 
 if __name__ == '__main__':

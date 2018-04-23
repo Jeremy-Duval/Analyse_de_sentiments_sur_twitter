@@ -37,7 +37,6 @@ def init_tweet():
 
 def getListeTweet(valeur):
     twitterStream = init_tweet()
-    tendance = twitterStream.listener.getTrends()
 
     #teststring = unicode("😀😃😄😁😆😅😂🤣☺️😊🙂😇🙃😉😌😍😋🙋", 'utf-8')
     #teststring = teststring.encode('unicode_escape')
@@ -45,17 +44,49 @@ def getListeTweet(valeur):
     twitterStream.filter(track=[str(valeur).encode('utf8')], languages=["fr"], stall_warnings=True)
     liste = twitterStream.listener.retrieveList()#voici comment récupérer l'objet liste
 
-    listeSentiment = getListeSentiment(liste)
-    MachineLearn = MachineLearning(liste, listeSentiment)
+    MachineLearn = MachineLearning(liste)
     return MachineLearn
 
+def MachineLearning(liste):
+    listeTweetAvecEmoticone = getListeAvecEcmoticone(liste)
+    listeSentiment = getListeSentiment(liste)
+    #return str(len(listeTweetAvecEmoticone))+" "+str(len(listeSentiment)) + " " + str(len(liste))
+    Xtransform = TfidVectorizer(listeTweetAvecEmoticone)
+    Xtrain,Xtest,Ytrain,Ytest = train_test_split(Xtransform,listeSentiment,random_state=3)
     
+    
+    
+    clf = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=1000,max_leaf_nodes=100)
+    clf.fit(Xtrain,Ytrain)
+    
+    Ypredict = clf.predict(Xtest)
+    sentiment = np.concatenate((Ytrain, Ypredict), axis=0)
 
-def getListeSentiment(liste):
+    #Teste le niveau de fiabilité !
+    #accuracy_score(Ytest, Ypredict)
+
+    cptPositif = 0
+    cptNegatif = 0
+    for i in sentiment:
+        if i > 0:
+            cptPositif = cptPositif+1
+        if i < 0:
+            cptNegatif = cptNegatif+1
+    if cptPositif == cptNegatif:
+        return "NEUTRE"
+    if cptPositif > cptNegatif:
+        return "POSITIF à "+str((float(cptPositif)/len(listeTweetAvecEmoticone))*100)+"%"
+    if cptNegatif > cptPositif:
+        return "NEGATIF à "+str((float(cptNegatif)/len(listeTweetAvecEmoticone))*100)+"%"
+            
+
+
+def getListeAvecEcmoticone(liste):
     stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
     tableau_positifs = stringpos.split(" ")
     indicesp = []
-    liste_final= range(len(liste))
+
+    listeTweetAvecEmoticone = []
     for emojis in tableau_positifs:
         #print emojis.lower()
         indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
@@ -66,8 +97,9 @@ def getListeSentiment(liste):
     liste_positifs = list(set(indicesp))
     
     for i in liste_positifs:
-        liste_final[i] = "POSITIF"
-    
+        listeTweetAvecEmoticone.append(liste[i])
+
+        
     stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
     tableau_negatifs = stringneg.split(" ")
     indicesn =[]
@@ -81,49 +113,56 @@ def getListeSentiment(liste):
     print liste_negatifs
     
     for i in liste_negatifs:
-        liste_final[i] = "NEGATIF"
+        listeTweetAvecEmoticone.append(liste[i])
+
         
-    for i in liste_final:
-        if i != "NEGATIF" and i != "POSITIF":
-            liste_final[i] = "NEUTRE"
+    return listeTweetAvecEmoticone
+
+def getListeSentiment(liste):
+    stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
+    tableau_positifs = stringpos.split(" ")
+    indicesp = []
+
+    listeSentiment = []
+    for emojis in tableau_positifs:
+        #print emojis.lower()
+        indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
+        #print indices_traitement
+        #print indices_traitement
+        indicesp = indicesp + indices_traitementp
+
+    liste_positifs = list(set(indicesp))
     
-    return liste_final
+    for i in liste_positifs:
+        listeSentiment.append(1)
+
+        
+    stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
+    tableau_negatifs = stringneg.split(" ")
+    indicesn =[]
+    for emojis in tableau_negatifs:
+        #print emojis.lower()
+        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
+        #print indices_traitement
+        #print indices_traitement
+        indicesn = indicesn + indices_traitement
+    liste_negatifs = list(set(indicesn))
+    print liste_negatifs
+    
+    for i in liste_negatifs:
+        listeSentiment.append(-1)
+
+        
+    return listeSentiment
+
+
   
 def getTendance():
     twitterStream = init_tweet()
     tendance = twitterStream.listener.getTrends()
     return tendance
 
-def MachineLearning(liste1,liste2):
-    Xtransform = TfidVectorizer(liste1)
-    Xtrain,Xtest,Ytrain,Ytest = train_test_split(Xtransform,liste2,random_state=3)
-    
-    clf = RandomForestClassifier(max_depth=2, random_state=0,n_estimators=1000,max_leaf_nodes=100)
-    clf.fit(Xtrain,Ytrain)
-    
-    Ypredict = clf.predict(Xtest)
-    #Teste le niveau de fiabilité !
-    #accuracy_score(Ytest, Ypredict)
-    
-    ListeSentiment =  np.concatenate((Ytrain, Ypredict), axis=0)
 
-    cptPositif = 0
-    cptNegatif = 0
-    cptNeutre = 0
-    for i in ListeSentiment:
-        if i == "POSITIF":
-            cptPositif = cptPositif+1
-        if i == "NEGATIF":
-            cptNegatif = cptNegatif+1
-        if i == "NEUTRE":
-            cptNeutre = cptNeutre+1
-    if cptNeutre > cptPositif and cptNeutre > cptNegatif:
-        return "NEUTRE à "+str((float(cptNeutre)/len(ListeSentiment))*100)+"%"
-    if cptPositif > cptNegatif:
-        return "POSITIF à "+str((float(cptPositif)/len(ListeSentiment))*100)+"%"
-    if cptNegatif > cptPositif:
-        return "NEGATIF à "+str(float(cptNegatif/len(ListeSentiment))*100)+"%"
-            
 
 def TfidVectorizer(messages):
     vectWord = TfidfVectorizer(analyzer='word',ngram_range=(1,2),max_df = 0.95,min_df=0.05)
