@@ -22,5 +22,10 @@ with open('dico', 'wb') as dictionary:
     dictNP.append(DictionaryRow("anxieux",None,1.0))
     dictNP.append(DictionaryRow("heureux",1.0,None))
     dictNP.append(DictionaryRow("aimer",1.0,None))
+    dictNP.append(DictionaryRow("détester",None,1.0))
+    dictNP.append(DictionaryRow("mal",None,1.0))
+    dictNP.append(DictionaryRow("pleurer",None,1.0))
+    dictNP.append(DictionaryRow("bien",1.0,None))
+    dictNP.append(DictionaryRow("hâte",1.0,None))
     #save the dictionary in file
     pickler.dump(dictNP)
