@@ -48,11 +48,48 @@ def getListeTweet(valeur):
     return MachineLearn
 
 def MachineLearning(liste):
-    listeTweetAvecEmoticone = getListeAvecEcmoticone(liste)
-    listeSentiment = getListeSentiment(liste)
-    #return str(len(listeTweetAvecEmoticone))+" "+str(len(listeSentiment)) + " " + str(len(liste))
-    Xtransform = TfidVectorizer(listeTweetAvecEmoticone)
-    Xtrain,Xtest,Ytrain,Ytest = train_test_split(Xtransform,listeSentiment,random_state=3)
+    stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
+    tableau_positifs = stringpos.split(" ")
+    indicesp = []
+    liste_final=[]
+    listeTriEmoticone = []
+    listeSentiment=range(len(liste))
+    for emojis in tableau_positifs:
+        #print emojis.lower()
+        indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
+        #print indices_traitement
+        #print indices_traitement
+        indicesp = indicesp + indices_traitementp
+
+    liste_positifs = list(set(indicesp))
+
+    for i in liste_positifs:
+        listeTriEmoticone.append(liste[i])
+        listeSentiment.append(1)
+        liste.remove(liste[i])
+
+
+    stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
+    tableau_negatifs = stringneg.split(" ")
+    indicesn =[]
+    for emojis in tableau_negatifs:
+        #print emojis.lower()
+        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
+        #print indices_traitement
+        #print indices_traitement
+        indicesn = indicesn + indices_traitement
+    liste_negatifs = list(set(indicesn))
+    print liste_negatifs
+
+    for i in liste_negatifs:
+        listeTriEmoticone.append(liste[i])
+        listeSentiment.append(-1)
+        liste.remove(liste[i])
+    liste_final = listeTriEmoticone+liste  
+    #return str(len(liste_final))+str(len(listeTriEmoticone))+str(len(liste))
+    #Machine Learning
+    Xtransform = TfidVectorizer(liste_final)
+    Xtrain,Xtest,Ytrain,Ytest = train_test_split(Xtransform,listeSentiment,random_state=len(listeTriEmoticone))
 
 
 
@@ -75,85 +112,9 @@ def MachineLearning(liste):
     if cptPositif == cptNegatif:
         return "NEUTRE"
     if cptPositif > cptNegatif:
-        return "POSITIF à "+str((float(cptPositif)/len(listeTweetAvecEmoticone))*100)+"%"
+        return "POSITIF à "+str((float(cptPositif)/len(liste_final))*100)+"%"
     if cptNegatif > cptPositif:
-        return "NEGATIF à "+str((float(cptNegatif)/len(listeTweetAvecEmoticone))*100)+"%"
-
-
-
-def getListeAvecEcmoticone(liste):
-    stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
-    tableau_positifs = stringpos.split(" ")
-    indicesp = []
-
-    listeTweetAvecEmoticone = []
-    for emojis in tableau_positifs:
-        #print emojis.lower()
-        indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
-        #print indices_traitement
-        #print indices_traitement
-        indicesp = indicesp + indices_traitementp
-
-    liste_positifs = list(set(indicesp))
-
-    for i in liste_positifs:
-        listeTweetAvecEmoticone.append(liste[i])
-
-
-    stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
-    tableau_negatifs = stringneg.split(" ")
-    indicesn =[]
-    for emojis in tableau_negatifs:
-        #print emojis.lower()
-        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
-        #print indices_traitement
-        #print indices_traitement
-        indicesn = indicesn + indices_traitement
-    liste_negatifs = list(set(indicesn))
-    print liste_negatifs
-
-    for i in liste_negatifs:
-        listeTweetAvecEmoticone.append(liste[i])
-
-
-    return listeTweetAvecEmoticone
-
-def getListeSentiment(liste):
-    stringpos = "😀 😃 😄 😁 😆 😅 😂 🤣 ☺️ 😊 🙂 😇 🙃 😉 😌 😍 😋 🙋 :D ^^ 👍 👐 🤗 ✌️ 😎 🤩 😸 😹 😺 😻 :) ❤️ 🧡 💛 💚 💙 💜 🖤"
-    tableau_positifs = stringpos.split(" ")
-    indicesp = []
-
-    listeSentiment = []
-    for emojis in tableau_positifs:
-        #print emojis.lower()
-        indices_traitementp = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
-        #print indices_traitement
-        #print indices_traitement
-        indicesp = indicesp + indices_traitementp
-
-    liste_positifs = list(set(indicesp))
-
-    for i in liste_positifs:
-        listeSentiment.append(1)
-
-
-    stringneg = "😒 😞 😔 😟 😕 🙁 ☹️ 😖 😣 😫 😩 😢 😭 😤 😠 😡 🤬 🤯 😨 😱 😰 😥 😓 🤒 🤕 👎 😾 :("
-    tableau_negatifs = stringneg.split(" ")
-    indicesn =[]
-    for emojis in tableau_negatifs:
-        #print emojis.lower()
-        indices_traitement = [i for i, s in enumerate(liste) if emojis.lower() in s.encode('utf-8').lower()]#chercher les emojis avec ça
-        #print indices_traitement
-        #print indices_traitement
-        indicesn = indicesn + indices_traitement
-    liste_negatifs = list(set(indicesn))
-    print liste_negatifs
-
-    for i in liste_negatifs:
-        listeSentiment.append(-1)
-
-
-    return listeSentiment
+        return "NEGATIF à "+str((float(cptNegatif)/len(liste_final))*100)+"%"
 
 
 

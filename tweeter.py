@@ -1,8 +1,6 @@
 from __future__ import print_function
 import sys
 import tweepy
-import multiprocessing
-import time
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 import json
@@ -21,45 +19,39 @@ api = tweepy.API(auth)
 
 class listener(StreamListener):
     
-    def __init__(self,time_limit=60):
-        self.start_time = time.time()
-        self.limit = time_limit
+    def __init__(self):
         self.compteur=0
         #self.mon_fichier = codecs.open("fichier.txt", "a","utf-8")
         self.liste=[]
-
-  
-    def on_data(self, data):
-        MAX_TWEETS = 100
-        if (time.time() - self.start_time) < self.limit:
-            all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
-		    # collect all desired data fields 
-            if 'text' in all_data:
-              tweet         = all_data["text"]
-              created_at    = all_data["created_at"]
-              retweeted     = all_data["retweeted"]
-              username      = all_data["user"]["screen_name"]
-              user_tz       = all_data["user"]["time_zone"]
-              user_location = all_data["user"]["location"]
-              user_coordinates   = all_data["coordinates"]
-		  
-          
-              #self.mon_fichier.write(tweet+"\n")
-          
-              self.compteur=self.compteur+1
-              self.liste.append(tweet)
-              print((self.compteur,username,tweet),file=sys.stderr)
-              #print(self.liste[self.compteur-1])
-              if self.compteur >= MAX_TWEETS:
-                  #self.mon_fichier.close()  
-                  return False
-              return True   
-            else:
-                return True
-        else:
-            return False
+    def on_data(self, data):
+        MAX_TWEETS = 10
 
+        all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
+        
+    # collect all desired data fields 
+        if 'text' in all_data:
+          tweet         = all_data["text"]
+          created_at    = all_data["created_at"]
+          retweeted     = all_data["retweeted"]
+          username      = all_data["user"]["screen_name"]
+          user_tz       = all_data["user"]["time_zone"]
+          user_location = all_data["user"]["location"]
+          user_coordinates   = all_data["coordinates"]
+          
+          
+          #self.mon_fichier.write(tweet+"\n")
+          
+          self.compteur=self.compteur+1
+          self.liste.append(tweet)
+          print((self.compteur,username,tweet),file=sys.stderr)
+          #print(self.liste[self.compteur-1])
+          if self.compteur >= MAX_TWEETS:
+              #self.mon_fichier.close()  
+              return False
+          return True   
+        else:
+            return True
             
     def retrieveList(self):
         return self.liste

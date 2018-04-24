@@ -28,11 +28,13 @@ def get_tendances():
 @app.route('/getTweets/')
 def get_tweets():
     print 'HERE GET TWEETS'
-    return json.dumps({'items': controller.getListeTweet(request.args.get('research'))})
+    method1 = controller.getListeTweet(request.args.get('research'))
+    method2 = "TEST"
+    return json.dumps({'items': {'method1': method1, 'method2': method2}})
 
 
 @app.route('/accueil')
-def accueil():
+def accueil_new():
     return render_template('accueil.html')
 
 
@@ -59,6 +61,25 @@ def send_js(path):
     return send_from_directory('css', path)
 
 
+@app.route('/')
+def accueil():
+    tendance = controller.getTendance()
+    mots = "Voici la page d'accueil !"
+    form = RechercheForm(request.form)
+    if request.method == 'GET':
+        mots = controller.getListeTweet(form.recherche.data)
+    return render_template('accueil.html', titre="Feel it !", mots=tendance, form=form, result=mots)
+
+@app.route('/<mot>')
+@app.route('/#<mot>')
+def recupTweet(mot):
+    tendance = controller.getTendance()
+    mots = controller.getListeTweet(mot)
+    form = RechercheForm(request.form)
+    if request.method == 'GET':
+        mots = controller.getListeTweet(form.recherche.data)
+
+    return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
 
 
 if __name__ == '__main__':
