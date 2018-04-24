@@ -16,7 +16,7 @@ oTree = OurTree()
 msg = ["J\'ai faim",
           "La vie est belle",
           "J\'aime les chats",
-          "Je pense que je suis excité",
+          "Tellement plaisant d\'être au soleil",
           "Je suis aimé ! C'est beau !",
           "Ce n'est pas triste d'être joyeux"]
 #2e liste     
