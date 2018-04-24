@@ -27,9 +27,9 @@ def get_tendances():
 
 @app.route('/getTweets/')
 def get_tweets():
-    print 'HERE GET TWEETS'
-    method1 = controller.getListeTweet(request.args.get('research'))
-    method2 = controller.getListeTweetFonctionTree(request.args.get('research'))
+    liste = controller.getListeTweet(request.args.get('research'))
+    method1 = controller.OurMachineLearning(liste)
+    method2 = controller.MachineLearning(liste)
     return json.dumps({'items': {'method1': method1, 'method2': method2}})
 
 

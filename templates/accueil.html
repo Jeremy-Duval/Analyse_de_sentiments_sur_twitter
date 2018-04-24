@@ -82,10 +82,18 @@
                     Résultat pour la recherche "[{ ctrl.researchDone }]":
                 </h2>
             </div>
-            <div flex layout="row" layout-align="center" class="center-align">
-                <h4 ng-if="ctrl.researchResult">
-                    [{ ctrl.researchResult }]
-                </h4>
+            <div flex layout="column" layout-align="center" class="center-align">
+                <div flex="50">
+                    <h4 ng-if="ctrl.researchResult">
+                        Méthode 1 : [{ ctrl.researchResult.method1 }]
+                    </h4>
+                </div>
+                <br>
+                <div flex="50">
+                    <h4 ng-if="ctrl.researchResult">
+                        Méthode 2 : [{ ctrl.researchResult.method2 }]
+                    </h4>
+                </div>
             </div>
         </div>
     </div>
