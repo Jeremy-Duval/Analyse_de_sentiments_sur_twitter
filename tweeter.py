@@ -25,11 +25,11 @@ class listener(StreamListener):
         self.liste=[]
         
     def on_data(self, data):
-        MAX_TWEETS = 5
+        MAX_TWEETS = 10
 
         all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
-		# collect all desired data fields 
+    # collect all desired data fields 
         if 'text' in all_data:
           tweet         = all_data["text"]
           created_at    = all_data["created_at"]
@@ -38,7 +38,7 @@ class listener(StreamListener):
           user_tz       = all_data["user"]["time_zone"]
           user_location = all_data["user"]["location"]
           user_coordinates   = all_data["coordinates"]
-		  
+          
           
           #self.mon_fichier.write(tweet+"\n")
           

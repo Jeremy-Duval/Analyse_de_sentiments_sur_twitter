@@ -28,11 +28,13 @@ def get_tendances():
 @app.route('/getTweets/')
 def get_tweets():
     print 'HERE GET TWEETS'
-    return json.dumps({'items': controller.getListeTweet(request.args.get('research'))})
+    method1 = controller.getListeTweet(request.args.get('research'))
+    method2 = "TEST"
+    return json.dumps({'items': {'method1': method1, 'method2': method2}})
 
 
 @app.route('/accueil')
-def accueil_stephane():
+def accueil_new():
     return render_template('accueil.html')
 
 
@@ -64,7 +66,7 @@ def accueil():
     tendance = controller.getTendance()
     mots = "Voici la page d'accueil !"
     form = RechercheForm(request.form)
-    if request.method == 'GET':      
+    if request.method == 'GET':
         mots = controller.getListeTweet(form.recherche.data)
     return render_template('accueil.html', titre="Feel it !", mots=tendance, form=form, result=mots)
 
@@ -74,7 +76,7 @@ def recupTweet(mot):
     tendance = controller.getTendance()
     mots = controller.getListeTweet(mot)
     form = RechercheForm(request.form)
-    if request.method == 'GET':      
+    if request.method == 'GET':
         mots = controller.getListeTweet(form.recherche.data)
 
     return render_template('accueil.html', titre="Feel it !", mots=tendance,form=form,result=mots)
