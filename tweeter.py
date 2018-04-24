@@ -25,7 +25,7 @@ class listener(StreamListener):
         self.liste=[]
         
     def on_data(self, data):
-        MAX_TWEETS = 2
+        MAX_TWEETS = 20
 
         all_data = json.loads(data.decode('utf-8','ignore').encode('utf-8'))
         
