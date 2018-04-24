@@ -10,7 +10,12 @@ FeelIt.py
 #Ouvrir l'interface web :
 http://127.0.0.1:5000/accueil
 
-#remerciements :
+#Remerciements :
 Merci à 
 Hussein AL-NATSHEH 
 Stéphane Conq
+
+#Projet réalisé par :
+Jenny Nguyen
+Jérémy Duval
+Zackaria Ben Dris
