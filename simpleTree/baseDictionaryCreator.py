@@ -49,5 +49,6 @@ with open('dico', 'wb') as dictionary:
     dictNP.append(DictionaryRow("jaloux",None,1.0))
     dictNP.append(DictionaryRow("premier",1.0,None))
     dictNP.append(DictionaryRow("plaisant",1.0,None))
+    dictNP.append(DictionaryRow("mort",None,1.0))
     #save the dictionary in file
     pickler.dump(dictNP)
