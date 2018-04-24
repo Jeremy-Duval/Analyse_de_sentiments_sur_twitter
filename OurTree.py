@@ -80,9 +80,9 @@ class OurTree:
             #print(j)
             negation = False       
             iWord = 0
-            print(j)
+            #print(j)
             for word in j :  
-                print(word)
+                #print(word)
                 iWord+=1
                 if(word=="ne"):
                     negation=True
@@ -95,7 +95,7 @@ class OurTree:
                                 pass
                             else :                                
                                 negation = False
-                    print(negation)
+                    #print(negation)
                     self.__actualizeDico__(word, coef, negation)
             
         return listCoef
