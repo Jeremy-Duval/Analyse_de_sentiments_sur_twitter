@@ -29,7 +29,7 @@ def get_tendances():
 def get_tweets():
     print 'HERE GET TWEETS'
     method1 = controller.getListeTweet(request.args.get('research'))
-    method2 = "TEST"
+    method2 = controller.getListeTweetFonctionTree(request.args.get('research'))
     return json.dumps({'items': {'method1': method1, 'method2': method2}})
 
 
